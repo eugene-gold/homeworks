@@ -66,16 +66,59 @@ const sherlock = new PrintEditionItem(
    
 
     class Library {
-        constructor(name, books) {
-            this.name = '';
-            this.books = [];      
+        constructor(name = '', books=[]) {
+            this.name = name;
+            this.books = books;
         }
-        addBook(book) {
+        addBook(book={}) {
+
             if (book instanceof PrintEditionItem && book.state > 30)  {
-                return this.books.push(book);
+                this.books.push(book);
             }
+
         }
         findBookBy(type, value) {
-            
+
+            if (this.hasOwnProperty(type) === value) {
+                return this.books[value]
+            }
+            else if (!(this.hasOwnProperty(type))) {
+                return null
+            }
+        }
+        giveBookByName(bookName) {
+            let b = this.books.filter( (index, books) => books.index === bookName)
+            if (b) {
+                this.books.pop(b)
+                return b
+            }
+            else return null
         }
     }
+const library = new Library("Библиотека имени Ленина");
+
+library.addBook(
+    new DetectiveBook(
+        "Артур Конан Дойл",
+        "Полное собрание повестей и рассказов о Шерлоке Холмсе в одном томе",
+        2019,
+        1008
+    )
+);
+
+library.addBook(
+    new FantasticBook(
+        "Аркадий и Борис Стругацкие",
+        "Пикник на обочине",
+        1972,
+        168
+    )
+);
+library.addBook(new NovelBook("Герберт Уэллс", "Машина времени", 1895, 138));
+library.addBook(new Magazine("Мурзилка", 1924, 60));
+console.log(library.findBookBy("name", "Властелин колец")); //null
+console.log(library.findBookBy("releaseDate", 1924).name); //"Мурзилка"
+
+console.log("Количество книг до выдачи: " + library.books.length); //Количество книг до выдачи: 4
+library.giveBookByName("Машина времени");
+console.log("Количество книг после выдачи: " + library.books.length); //Количество книг после выдачи: 3
