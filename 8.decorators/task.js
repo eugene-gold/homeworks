@@ -23,31 +23,45 @@ function cachingDecoratorNew (func) {
     return wrapper
 }
 
-function debounceDecoratorNew(func) {
+function debounceDecoratorNew(func,ms) {
   // Ваш код
-    const debounceDecorator = (f, ms) => {
-        let timerId;
-        let firstStart;
-        if (firstStart) {
-
+    let firstStart;
+    func ();
+    firstStart = true;
+    if(firstStart) {
+            let timerId;
             return function (...args) {
-                setTimeout(() => {
-                    f.apply(this, args);
-                },);
-                firstStart = false;
-                clearTimeout(timerId);
+                clearTimeout(timerId)
                 timerId = setTimeout(() => {
-                    f.apply(this, args);
+                    func.apply(this, args);
                 }, ms);
+            }
+    }
+}
 
-            };
+
+function debounceDecorator2(func, ms) {
+  // Ваш код
+    let firstStart;
+    func ();
+    let count = 0;
+    firstStart = true;
+
+    if(firstStart) {
+        let timerId;
+
+        return function (...args) {
+            count += 1;
+            clearTimeout(timerId)
+            timerId = setTimeout(() => {
+                func.apply(this, args);
+            }, ms);
+
         }
     }
-
 }
 
 
 
-function debounceDecorator2(func) {
-  // Ваш код
-}
+
+
