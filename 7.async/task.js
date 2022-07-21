@@ -7,20 +7,13 @@ class AlarmClock {
     }
 
     addClock(time = 'HH:MM', callback, id) {
-        try {
-            if ((id === undefined)) {
-            }
-        } catch (error) {
-            console.error('Невозможно идентифицировать будильник, отсутствует id')
+        if ((id === undefined)) {
+            throw new Error('Невозможно идентифицировать будильник, отсутствует id')
         }
-        try {
-            if (this.alarmCollection.some (item => item.id === id)) {
-            }
-        } catch (error) {
+        if (this.alarmCollection.some (item => item.id === id)) {
             console.error('In collection')
+            return
         }
-
-
         callback = () => {
 
         }
@@ -45,18 +38,13 @@ class AlarmClock {
     }
 
     start() {
-        function checkCLock() {
-            const currentDate = new Date();
-            const hours = currentDate.getHours() < 10 ? `0${currentDate.getHours()}` : `${currentDate.getHours()}`;
-            const minutes = currentDate.getMinutes() < 10 ? `0${currentDate.getMinutes()}` : `${currentDate.getMinutes()}`;
-            const clock = `${hours}:${minutes}`;
-            // if (  this.alarmCollection[time] === clock  ) {
-            //
-            //     return this.alarmCollection.callback()
-            // }
+        let checkCLock = (item) => {
+            if (  this.getCurrentFormattedTime() === item.time  ) {
+                return item.callback()
+            }
         }
         if(this.timerId === null) {
-            this.timerId = setInterval(() =>this.alarmCollection.forEach(checkCLock) )
+            this.timerId = setInterval(() =>this.alarmCollection.forEach(item => checkCLock(item) ) )
         }
 
     }
@@ -93,6 +81,7 @@ function testCase () {
     tearsOfTime.addClock('21:36', () =>  console.log("Вставай 4"), 1)
     tearsOfTime.printAlarms()
     tearsOfTime.start()
+    console.log(tearsOfTime.alarmCollection)
 }
 
 testCase();
