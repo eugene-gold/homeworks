@@ -68,7 +68,7 @@ class AlarmClock {
 
 //2
 
-let tearsOfTime = new AlarmClock()
+let tearsOfTime = new AlarmClock() //lost in light (c) Crematory
 function testCase () {
     tearsOfTime.addClock('21:30', () =>  console.log("Вставай 1"), 1)
     tearsOfTime.addClock('21:31', () => { console.log("Вставай 2"); tearsOfTime.removeClock(2) }, 2)
